@@ -3,6 +3,7 @@ import requests
 import sys
 import time
 from datetime import datetime
+import json
 
 class BlurtQuestTester:
     def __init__(self, base_url):
@@ -21,6 +22,9 @@ class BlurtQuestTester:
 
         self.tests_run += 1
         print(f"\n🔍 Testing {name}...")
+        print(f"URL: {url}")
+        if data:
+            print(f"Data: {json.dumps(data)}")
         
         try:
             if method == 'GET':
@@ -120,14 +124,27 @@ def main():
     print("==================================\n")
 
     # Test health check
-    health_success, _ = tester.test_health_check()
+    health_success, health_data = tester.test_health_check()
     if not health_success:
         print("❌ Health check failed, stopping tests")
         return 1
+    else:
+        print(f"Health check response: {health_data}")
 
     # Test authentication
     if not tester.test_login(test_username, test_posting_key):
         print("❌ Authentication failed, stopping tests")
+        
+        # Try to get more information about the Blurt authentication issue
+        print("\n🔍 Checking Blurt authentication mechanism...")
+        try:
+            # Make a direct request to the Blurt API to verify the account exists
+            print(f"Note: This test cannot directly verify the posting key without the Blurt API.")
+            print(f"The issue might be with the Blurt blockchain connection or the posting key verification.")
+            print(f"Check if the beem library is properly installed and configured in the backend.")
+        except Exception as e:
+            print(f"Error checking Blurt API: {str(e)}")
+        
         return 1
 
     # Test user profile
