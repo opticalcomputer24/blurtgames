@@ -95,6 +95,12 @@ const Login = ({ onLogin }) => {
         <div className="mt-6 text-center text-sm text-blue-200">
           <p>🔐 Secure authentication with Blurt blockchain</p>
           <p className="mt-1">Complete puzzles to earn BLURT tokens!</p>
+          <div className="mt-4 p-3 bg-yellow-500/20 border border-yellow-500/30 rounded-lg">
+            <p className="text-yellow-200 font-semibold">🎮 Demo Mode Available</p>
+            <p className="text-yellow-300 text-xs mt-1">
+              For testing: Use username starting with "demo_" (e.g., demo_player) with any posting key
+            </p>
+          </div>
         </div>
       </div>
     </div>
