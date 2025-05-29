@@ -204,13 +204,21 @@ async def init_quiz_questions():
 async def login(auth_request: BlurtAuthRequest):
     """Authenticate user with Blurt posting key"""
     try:
-        # Verify the posting key
-        is_valid = await verify_blurt_posting_key(auth_request.username, auth_request.posting_key)
+        # Demo mode for testing - check if username starts with "demo_"
+        is_demo = auth_request.username.startswith("demo_")
+        
+        if is_demo:
+            # Demo mode - accept any posting key
+            is_valid = True
+            logging.info(f"Demo mode authentication for user: {auth_request.username}")
+        else:
+            # Regular Blurt authentication
+            is_valid = await verify_blurt_posting_key(auth_request.username, auth_request.posting_key)
         
         if not is_valid:
             raise HTTPException(
                 status_code=401,
-                detail="Invalid Blurt username or posting key"
+                detail="Invalid Blurt username or posting key. For demo, use username starting with 'demo_'"
             )
         
         # Check if user exists, if not create new user
